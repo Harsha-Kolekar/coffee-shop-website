@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Bookings - Coffee Shop</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #3c3b3f 0%, #605c3c 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            color: #3c3b3f;
+            font-size: 28px;
+        }
+
+        .back-btn {
+            background: #605c3c;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: #3c3b3f;
+            transform: translateY(-2px);
+        }
+
+        .bookings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+        }
+
+        .booking-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .booking-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #605c3c, #3c3b3f);
+        }
+
+        .booking-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .booking-status {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-confirmed {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-cancelled {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .booking-info {
+            margin-bottom: 20px;
+        }
+
+        .booking-info h3 {
+            color: #3c3b3f;
+            font-size: 20px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .booking-info h3 i {
+            color: #605c3c;
+            font-size: 18px;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+            color: #555;
+        }
+
+        .info-item i {
+            color: #605c3c;
+            width: 20px;
+            text-align: center;
+        }
+
+        .info-label {
+            font-weight: 600;
+            min-width: 80px;
+        }
+
+        .info-value {
+            color: #333;
+        }
+
+        .booking-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: #605c3c;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #3c3b3f;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 60px;
+            color: white;
+        }
+
+        .loading i {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #f5c6cb;
+        }
+
+        .empty-state {
+            background: white;
+            border-radius: 15px;
+            padding: 60px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .empty-state i {
+            font-size: 64px;
+            color: #605c3c;
+            margin-bottom: 20px;
+        }
+
+        .empty-state h3 {
+            color: #3c3b3f;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .empty-state p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .bookings-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .booking-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-calendar-alt"></i> My Bookings</h1>
+            <a href="profile.html" class="back-btn">
+                <i class="fas fa-arrow-left"></i> Back to Profile
+            </a>
+        </div>
+
+        <div id="loading" class="loading">
+            <i class="fas fa-spinner fa-spin"></i>
+            <h3>Loading your bookings...</h3>
+        </div>
+
+        <div id="error-message" class="error" style="display: none;"></div>
+
+        <div id="bookings-container" style="display: none;">
+            <div id="bookings-grid" class="bookings-grid"></div>
+        </div>
+
+        <div id="empty-state" class="empty-state" style="display: none;">
+            <i class="fas fa-calendar-times"></i>
+            <h3>No Bookings Found</h3>
+            <p>You haven't made any bookings yet. Would you like to make one?</p>
+            <a href="index.html#book" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Make a Booking
+            </a>
+        </div>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        // Load user's bookings
+        async function loadMyBookings() {
+            const token = localStorage.getItem('token');
+            
+            if (!token) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            try {
+                // Show loading
+                document.getElementById('loading').style.display = 'block';
+                document.getElementById('bookings-container').style.display = 'none';
+                document.getElementById('empty-state').style.display = 'none';
+                document.getElementById('error-message').style.display = 'none';
+
+                const response = await fetch(window.getApiUrl('/api/bookings/my-bookings'), {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch bookings');
+                }
+
+                const data = await response.json();
+                const bookings = data.data || [];
+
+                // Hide loading
+                document.getElementById('loading').style.display = 'none';
+
+                if (bookings.length === 0) {
+                    document.getElementById('empty-state').style.display = 'block';
+                } else {
+                    displayBookings(bookings);
+                    document.getElementById('bookings-container').style.display = 'block';
+                }
+
+            } catch (error) {
+                console.error('Error loading bookings:', error);
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('error-message').textContent = 'Failed to load bookings. Please try again later.';
+                document.getElementById('error-message').style.display = 'block';
+            }
+        }
+
+        // Display bookings in cards
+        function displayBookings(bookings) {
+            const grid = document.getElementById('bookings-grid');
+            grid.innerHTML = '';
+
+            bookings.forEach(booking => {
+                const bookingDate = new Date(booking.bookingDate).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+
+                const statusClass = `status-${booking.status}`;
+                const statusText = booking.status.charAt(0).toUpperCase() + booking.status.slice(1);
+
+                const card = document.createElement('div');
+                card.className = 'booking-card';
+                card.innerHTML = `
+                    <div class="booking-status ${statusClass}">${statusText}</div>
+                    
+                    <div class="booking-info">
+                        <h3><i class="fas fa-info-circle"></i> Booking Details</h3>
+                        
+                        <div class="info-item">
+                            <i class="fas fa-user"></i>
+                            <span class="info-label">Name:</span>
+                            <span class="info-value">${booking.name}</span>
+                        </div>
+                        
+                        <div class="info-item">
+                            <i class="fas fa-envelope"></i>
+                            <span class="info-label">Email:</span>
+                            <span class="info-value">${booking.email}</span>
+                        </div>
+                        
+                        <div class="info-item">
+                            <i class="fas fa-phone"></i>
+                            <span class="info-label">Phone:</span>
+                            <span class="info-value">${booking.phone}</span>
+                        </div>
+                        
+                        <div class="info-item">
+                            <i class="fas fa-users"></i>
+                            <span class="info-label">Guests:</span>
+                            <span class="info-value">${booking.numberOfGuests}</span>
+                        </div>
+                        
+                        <div class="info-item">
+                            <i class="fas fa-calendar"></i>
+                            <span class="info-label">Date:</span>
+                            <span class="info-value">${bookingDate}</span>
+                        </div>
+                        
+                        <div class="info-item">
+                            <i class="fas fa-clock"></i>
+                            <span class="info-label">Time:</span>
+                            <span class="info-value">${booking.bookingTime}</span>
+                        </div>
+                        
+                        ${booking.message ? `
+                        <div class="info-item">
+                            <i class="fas fa-comment"></i>
+                            <span class="info-label">Message:</span>
+                            <span class="info-value">${booking.message}</span>
+                        </div>
+                        ` : ''}
+                    </div>
+
+                    <div class="booking-actions">
+                        ${booking.status === 'pending' ? `
+                            <button class="btn btn-secondary" onclick="cancelBooking('${booking._id}')">
+                                <i class="fas fa-times"></i> Cancel
+                            </button>
+                        ` : ''}
+                        <button class="btn btn-primary" onclick="contactSupport()">
+                            <i class="fas fa-phone"></i> Contact
+                        </button>
+                    </div>
+                `;
+
+                grid.appendChild(card);
+            });
+        }
+
+        // Cancel booking
+        async function cancelBooking(bookingId) {
+            if (!confirm('Are you sure you want to cancel this booking?')) {
+                return;
+            }
+
+            const token = localStorage.getItem('token');
+
+            try {
+                const response = await fetch(window.getApiUrl(`/api/bookings/${bookingId}`), {
+                    method: 'PATCH',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        status: 'cancelled'
+                    })
+                });
+
+                if (response.ok) {
+                    alert('Booking cancelled successfully');
+                    loadMyBookings(); // Reload bookings
+                } else {
+                    throw new Error('Failed to cancel booking');
+                }
+            } catch (error) {
+                console.error('Error cancelling booking:', error);
+                alert('Failed to cancel booking. Please try again.');
+            }
+        }
+
+        function contactSupport() {
+            alert('Please contact us at +123-456-7890 or coffee@gmail.com for assistance.');
+        }
+
+        // Load bookings when page loads
+        document.addEventListener('DOMContentLoaded', loadMyBookings);
+    </script>
+</body>
+</html>

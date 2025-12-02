@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Coffee Shop</title>
+
+    <!-- Font Awesome CDN Link  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <style>
+        /* Hide navbar */
+        .header .navbar {
+            display: none;
+        }
+        
+        /* Style for logo container */
+        .logo-container {
+            text-align: center;
+            padding: 2rem 0;
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('image/coffee-bg.jpg');
+            background-size: cover;
+            background-position: center;
+            color: #fff;
+            margin-bottom: 3rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .logo-container .logo {
+            font-size: 3.5rem;
+            color: #fff;
+            text-decoration: none;
+            display: inline-block;
+            margin: 1rem 0;
+        }
+        
+        .logo-container .logo i {
+            color: #d3ad7f;
+        }
+        
+        .logo-container p {
+            font-size: 1.6rem;
+            margin-top: 1rem;
+            color: #eee;
+        }
+        
+        :root {
+            --main-color: #d3ad7f;
+            --black: #13131a;
+            --bg: #010103;
+            --border: .1rem solid rgba(255,255,255,.3);
+            --box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.1);
+        }
+
+        .form-container {
+            min-height: calc(100vh - 200px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            background: linear-gradient(135deg, #f5f7fa 0%, #f9f9f9 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .form-container::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: url('image/coffee-beans-bg.png');
+            background-size: 300px;
+            opacity: 0.1;
+            z-index: 0;
+        }
+
+        .form-container form {
+            width: 100%;
+            max-width: 40rem;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 1rem;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            padding: 3rem;
+            text-align: center;
+            transform: translateY(0);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0,0,0,0.05);
+            position: relative;
+            z-index: 1;
+            margin: 2rem auto;
+        }
+        
+        .form-container form:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+        }
+
+        .form-container form h3 {
+            font-size: 3rem;
+            text-transform: uppercase;
+            color: #333;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-container form .box {
+            width: 100%;
+            padding: 1.2rem 1.4rem;
+            border: var(--border);
+            margin: 1rem 0;
+            font-size: 1.6rem;
+            color: #333;
+            border-radius: .5rem;
+        }
+
+        .form-container form p {
+            padding: 1rem 0;
+            font-size: 1.5rem;
+            color: #666;
+        }
+
+        .form-container form p a {
+            color: var(--main-color);
+            text-decoration: underline;
+        }
+
+        .form-container form .btn {
+            width: 100%;
+            margin: 1.5rem 0;
+        }
+
+        .form-toggle {
+            display: flex;
+            justify-content: center;
+            margin: 0 auto 3rem;
+            gap: 1rem;
+            max-width: 40rem;
+            background: linear-gradient(145deg, #f0f0f0, #ffffff);
+            padding: 0.8rem;
+            border-radius: 50px;
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.1), 
+                        -5px -5px 15px rgba(255,255,255,0.8);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .form-toggle-btn {
+            padding: 1.2rem 3rem;
+            background: transparent;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.6rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            color: #666;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+        }
+        
+        .form-toggle-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--main-color);
+            z-index: -1;
+            border-radius: 50px;
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .form-toggle-btn:hover {
+            color: #fff;
+        }
+        
+        .form-toggle-btn:hover::before {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+        
+        .form-toggle-btn.active {
+            background: var(--main-color);
+            color: #fff;
+            box-shadow: 0 5px 15px rgba(211, 173, 127, 0.3);
+        }
+        
+        .form-toggle-btn.active::before {
+            transform: none;
+        }
+
+        .form-toggle-btn.active {
+            background: var(--main-color);
+            color: #fff;
+        }
+
+        .form-section {
+            display: none;
+        }
+
+        .form-section.active {
+            display: block;
+        }
+        
+        /* Button styles */
+        .btn {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 1rem 3rem;
+            font-size: 1.7rem;
+            color: #fff;
+            background: var(--main-color);
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            text-transform: capitalize;
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            background: #c19a6b;
+            transform: translateY(-2px);
+        }
+        
+        /* Input box styles */
+        .inputBox {
+            margin: 1.5rem 0;
+        }
+        
+        .inputBox .box {
+            width: 100%;
+            padding: 1.2rem 1.4rem;
+            border: 1px solid #ddd;
+            margin: 1rem 0;
+            font-size: 1.6rem;
+            color: #333;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .inputBox .box:focus {
+            border-color: var(--main-color);
+            box-shadow: 0 0 0 3px rgba(211, 173, 127, 0.2);
+            outline: none;
+        }
+        
+        /* Message styles */
+        .message {
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border-radius: 5px;
+            font-size: 1.4rem;
+            text-align: center;
+        }
+        
+        .message.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .message.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header with Logo -->
+    <div class="logo-container">       
+        <div class="logo">coffee <i class="fas fa-mug-hot"></i></div>                                         
+        <p>Welcome back! Please login to continue</p>                             </div>
+
+    <!-- Coffee Beans Decoration -->
+    <div class="coffee-bean" style="position: fixed; top: 20%; left: 5%; width: 100px; height: 100px; opacity: 0.1; transform: rotate(45deg);">
+        <img src="image/coffee-bean.png" alt="" style="width: 100%; height: 100%; object-fit: contain;">
+    </div>
+    
+    <div class="coffee-bean" style="position: fixed; bottom: 10%; right: 5%; width: 150px; height: 150px; opacity: 0.1; transform: rotate(-20deg);">
+        <img src="image/coffee-bean.png" alt="" style="width: 100%; height: 100%; object-fit: contain;">
+    </div>
+    
+    <!-- FORM SECTION -->
+    <section class="form-container">
+        <form id="loginForm">
+            <h3>Welcome Back!</h3>
+            <p style="margin-bottom: 2rem; color: #666;">Login to your account to continue</p>
+            
+            <div id="message" class="message" style="display: none; margin-bottom: 2rem; padding: 1rem; border-radius: 5px; text-align: center;"></div>
+            
+            <div class="inputBox">
+                <input type="email" id="email" class="box" placeholder="Enter your email" required>
+            </div>
+            
+            <div class="inputBox">
+                <input type="password" id="password" class="box" placeholder="Enter your password" required>
+                <a href="#" class="forgot-password" style="display: block; text-align: right; margin-top: 0.5rem; color: #666; font-size: 1.3rem;">
+                    Forgot Password?
+                </a>
+            </div>
+            
+            <button type="submit" class="btn">Login</button>
+            
+            <p>Don't have an account? <a href="register.html" style="color: var(--main-color); font-weight: 600;">Register here</a></p>
+            </form>
+    </section>
+
+    <!-- Success Message (hidden by default) -->
+    <div id="success-message" style="display: none; position: fixed; top: 20px; right: 20px; background: #4CAF50; color: white; padding: 15px 25px; border-radius: 5px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); z-index: 1000;">
+        <span id="success-text">Success! Redirecting...</span>
+    </div>
+
+    <!-- Simple Footer -->
+    <footer style="text-align: center; padding: 2rem; background: #f8f9fa; color: #666; font-size: 1.4rem;">
+        <p> 2023 Coffee Shop. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Check if user is already logged in
+        function checkAuth() {
+            const token = localStorage.getItem('token');
+            console.log('Login page auth check - Token exists:', !!token);
+            
+            // Only redirect if we have a valid token and we're not coming from registration
+            if (token) {
+                // Verify token is valid by checking if it contains expected format
+                try {
+                    const tokenData = atob(token);
+                    if (tokenData && tokenData.includes(':')) {
+                        console.log('Valid token found, redirecting to home');
+                        window.location.href = 'index.html';
+                        return;
+                    }
+                } catch (e) {
+                    console.log('Invalid token format, staying on login page');
+                    localStorage.removeItem('token'); // Remove invalid token
+                }
+            }
+            
+            console.log('No valid token, showing login form');
+        }
+
+        // Handle form submission
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is already logged in
+            const token = localStorage.getItem('token');
+            if (token) {
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            const loginForm = document.getElementById('loginForm');
+            if (loginForm) {
+                loginForm.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    const email = document.getElementById('email').value.trim();
+                    const password = document.getElementById('password').value;
+                    const messageDiv = document.getElementById('message');
+                    
+                    // Basic validation
+                    if (!email || !password) {
+                        showMessage('Please enter both email and password', 'error');
+                        return;
+                    }
+                    
+                    // Show loading state
+                    const submitBtn = loginForm.querySelector('button[type="submit"]');
+                    const originalBtnText = submitBtn.innerHTML;
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging in...';
+                    
+                    try {
+                        console.log('Attempting login with:', { email });
+                        const response = await fetch('http://localhost:3000/api/auth/login', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({ 
+                                email: email,
+                                password: password 
+                            })
+                        });
+
+                        let data;
+                        try {
+                            data = await response.json();
+                            console.log('Login response:', data);
+                        } catch (jsonError) {
+                            console.error('Error parsing JSON:', jsonError);
+                            throw new Error('Invalid response from server');
+                        }
+
+                        if (!response.ok) {
+                            // Handle specific error messages from the server
+                            const errorMessage = data.message || 
+                                              (response.status === 401 ? 'Invalid email or password' : 
+                                              'Login failed. Please try again.');
+                            throw new Error(errorMessage);
+                        }
+
+                        // Store the token in localStorage if it exists
+                        if (data.token) {
+                            localStorage.setItem('token', data.token);
+                            showMessage('Login successful! Redirecting...', 'success');
+                            // Redirect to home page after a short delay
+                            setTimeout(() => {
+                                window.location.href = 'index.html';
+                            }, 1500);
+                        } else {
+                            throw new Error('No authentication token received');
+                        }
+                    } catch (error) {
+                        console.error('Login error:', error);
+                        // More specific error messages
+                        const userFriendlyError = error.message.includes('Failed to fetch') ? 
+                            'Unable to connect to the server. Please check your internet connection.' : 
+                            error.message;
+                        showMessage(userFriendlyError, 'error');
+                    } finally {
+                        // Reset button state
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = originalBtnText;
+                    }
+                });
+            }
+        });
+
+        // Show message to user
+        function showMessage(message, type = 'success') {
+            const messageDiv = document.getElementById('message');
+            if (!messageDiv) {
+                console.error('Message div not found');
+                return;
+            }
+            
+            // Clear any existing timeout
+            if (window.messageTimeout) {
+                clearTimeout(window.messageTimeout);
+            }
+            
+            messageDiv.textContent = message;
+            messageDiv.className = `message ${type}`;
+            messageDiv.style.display = 'block';
+            messageDiv.style.padding = '12px 20px';
+            messageDiv.style.borderRadius = '4px';
+            messageDiv.style.margin = '10px 0';
+            messageDiv.style.transition = 'all 0.3s ease';
+            
+            // Auto-hide after delay (longer for errors)
+            const hideDelay = type === 'error' ? 10000 : 5000;
+            window.messageTimeout = setTimeout(() => {
+                messageDiv.style.opacity = '0';
+                setTimeout(() => {
+                    messageDiv.style.display = 'none';
+                    messageDiv.style.opacity = '1';
+                }, 300);
+            }, hideDelay);
+            
+            // Scroll to message
+            messageDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        // Mobile menu toggle
+        const menu = document.querySelector('#menu-btn');
+        const navbar = document.querySelector('.header .navbar');
+        
+        if (menu) {
+            menu.onclick = () => {
+                menu.classList.toggle('fa-times');
+                if (navbar) {
+                    navbar.classList.toggle('active');
+                }
+            };
+        }
+
+        window.onscroll = () => {
+            if (menu) menu.classList.remove('fa-times');
+            if (navbar) navbar.classList.remove('active');
+        };
+    </script>
+</body>
+
+</html>

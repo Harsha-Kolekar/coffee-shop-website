@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Admin Dashboard</title>
+
+<style>
+    body {
+        margin: 0;
+        font-family: Poppins, sans-serif;
+        background: #f7f7f7;
+        display: flex;
+    }
+
+    .sidebar {
+        width: 220px;
+        background: #3c3b3f;
+        height: 100vh;
+        color: #fff;
+        padding: 20px;
+    }
+
+    .sidebar h2 {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .sidebar a {
+        display: block;
+        padding: 12px;
+        margin: 10px 0;
+        background: #605c3c;
+        text-decoration: none;
+        color: white;
+        border-radius: 8px;
+        text-align: center;
+    }
+
+    .sidebar a:hover {
+        background: #8e8c79;
+    }
+
+    .content {
+        flex: 1;
+        padding: 30px;
+    }
+
+    .card {
+        background: #fff;
+        padding: 20px;
+        margin: 15px 0;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .title {
+        font-size: 26px;
+        font-weight: 600;
+        margin-bottom: 20px;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="sidebar">
+    <h2>Admin</h2>
+    <a href="admin-dashboard.html">Dashboard</a>
+    <a href="admin-bookings.html">Bookings</a>
+    <a href="admin-orders.html">Orders</a>
+    <a href="#" onclick="logout()">Logout</a>
+</div>
+
+<div class="content">
+    <div class="title">Dashboard Overview</div>
+
+    <div class="card" id="totalBookings">Total Bookings: loading...</div>
+    <div class="card" id="todayBookings">Today's Bookings: loading...</div>
+    <div class="card" id="pendingBookings">Pending Confirmations: loading...</div>
+    
+    <!-- Orders Statistics -->
+    <div class="card" id="totalOrders">Total Orders: loading...</div>
+    <div class="card" id="todayOrders">Today's Orders: loading...</div>
+    <div class="card" id="totalRevenue">Total Revenue: loading...</div>
+</div>
+
+<script>
+    const token = localStorage.getItem("adminToken");
+    if (!token) window.location.href = "admin-login.html";
+
+    // Load orders statistics
+    function loadOrdersStats() {
+        const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        
+        const todayOrders = orders.filter(order => {
+            const orderDate = new Date(order.createdAt);
+            return orderDate >= today;
+        });
+
+        const totalRevenue = orders.reduce((sum, order) => sum + order.total, 0);
+
+        document.getElementById("totalOrders").innerHTML = "Total Orders: " + orders.length;
+        document.getElementById("todayOrders").innerHTML = "Today's Orders: " + todayOrders.length;
+        document.getElementById("totalRevenue").innerHTML = "Total Revenue: $" + totalRevenue.toFixed(2);
+    }
+
+    // Load booking statistics (keeping existing functionality)
+    fetch("http://localhost:3000/api/admin/stats", {
+        headers: { Authorization: `Bearer ${token}` }
+    })
+    .then(res => res.json())
+    .then(data => {
+        document.getElementById("totalBookings").innerHTML = "Total Bookings: " + data.data.total;
+        document.getElementById("todayBookings").innerHTML = "Today's Bookings: " + data.data.today;
+        document.getElementById("pendingBookings").innerHTML = "Pending Confirmations: " + data.data.pending;
+    })
+    .catch(error => {
+        // Fallback if API is not available
+        document.getElementById("totalBookings").innerHTML = "Total Bookings: 0";
+        document.getElementById("todayBookings").innerHTML = "Today's Bookings: 0";
+        document.getElementById("pendingBookings").innerHTML = "Pending Confirmations: 0";
+    });
+
+    // Load orders stats
+    loadOrdersStats();
+
+    function logout() {
+        localStorage.removeItem("adminToken");
+        window.location.href = "admin-login.html";
+    }
+</script>
+
+</body>
+</html>

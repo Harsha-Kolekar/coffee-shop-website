@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Order - Coffee Shop</title>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <style>
+        .tracking-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .tracking-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .tracking-header h1 {
+            color: var(--text-color);
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .order-search {
+            background: rgba(255, 255, 255, 0.05);
+            border: 0.1rem solid rgba(255, 255, 255, 0.2);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .order-search h3 {
+            color: var(--text-color);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .search-form {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .search-form input {
+            flex: 1;
+            padding: 1rem;
+            border: 0.1rem solid rgba(255, 255, 255, 0.2);
+            background: var(--bg-color);
+            color: var(--text-color);
+            border-radius: 0.5rem;
+            font-size: 1.1rem;
+        }
+        
+        .search-form button {
+            padding: 1rem 2rem;
+            background: var(--main-color);
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .search-form button:hover {
+            background: #c8a97e;
+        }
+        
+        .tracking-info {
+            display: none;
+            background: rgba(255, 255, 255, 0.05);
+            border: 0.1rem solid rgba(255, 255, 255, 0.2);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .tracking-info.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .order-summary {
+            background: rgba(255, 215, 0, 0.1);
+            border: 0.1rem solid var(--main-color);
+            border-radius: 0.8rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .order-summary h4 {
+            color: var(--main-color);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .order-detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            color: var(--text-color);
+        }
+        
+        .tracking-timeline {
+            position: relative;
+            padding-left: 3rem;
+        }
+        
+        .tracking-timeline::before {
+            content: '';
+            position: absolute;
+            left: 1rem;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .timeline-item {
+            position: relative;
+            padding: 1.5rem 0;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2.5rem;
+            top: 2rem;
+            width: 1rem;
+            height: 1rem;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+        }
+        
+        .timeline-item.completed::before {
+            background: #4CAF50;
+            border-color: #4CAF50;
+        }
+        
+        .timeline-item.active::before {
+            background: var(--main-color);
+            border-color: var(--main-color);
+            animation: pulse 2s infinite;
+        }
+        
+        .timeline-content {
+            background: rgba(255, 255, 255, 0.05);
+            border: 0.1rem solid rgba(255, 255, 255, 0.2);
+            border-radius: 0.8rem;
+            padding: 1.5rem;
+        }
+        
+        .timeline-content h4 {
+            color: var(--text-color);
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .timeline-content p {
+            color: #999;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .timeline-time {
+            color: var(--main-color);
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+        
+        .delivery-map {
+            background: rgba(255, 255, 255, 0.05);
+            border: 0.1rem solid rgba(255, 255, 255, 0.2);
+            border-radius: 1rem;
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .delivery-map h3 {
+            color: var(--text-color);
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+        
+        .map-placeholder {
+            background: rgba(0, 0, 0, 0.3);
+            border: 0.1rem solid rgba(255, 255, 255, 0.2);
+            border-radius: 0.8rem;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 1.2rem;
+        }
+        
+        .contact-driver {
+            background: rgba(76, 175, 80, 0.1);
+            border: 0.1rem solid #4CAF50;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        
+        .contact-driver h3 {
+            color: #4CAF50;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .driver-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .driver-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--main-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+        
+        .driver-details h4 {
+            color: var(--text-color);
+            font-size: 1.2rem;
+            margin-bottom: 0.3rem;
+        }
+        
+        .driver-details p {
+            color: #999;
+            font-size: 1rem;
+        }
+        
+        .contact-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+        
+        .contact-buttons button {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-call {
+            background: #4CAF50;
+            color: white;
+        }
+        
+        .btn-call:hover {
+            background: #45a049;
+        }
+        
+        .btn-message {
+            background: var(--main-color);
+            color: white;
+        }
+        
+        .btn-message:hover {
+            background: #c8a97e;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        @media (max-width: 768px) {
+            .tracking-container {
+                padding: 1rem;
+            }
+            
+            .search-form {
+                flex-direction: column;
+            }
+            
+            .tracking-timeline {
+                padding-left: 2rem;
+            }
+            
+            .timeline-item::before {
+                left: -1.5rem;
+            }
+            
+            .contact-buttons {
+                flex-direction: column;
+            }
+            
+            .contact-buttons button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <a href="index.html" class="logo">coffee <i class="fas fa-mug-hot"></i></a>
+        <nav class="navbar">
+            <a href="index.html">home</a>
+            <a href="#about">about</a>
+            <a href="#menu">menu</a>
+            <a href="#review">review</a>
+            <a href="#book">book</a>
+        </nav>
+        <div class="icons">
+            <div class="fas fa-search" id="search-btn"></div>
+            <div class="fas fa-shopping-cart" id="cart-btn"></div>
+            <div class="fas fa-bars" id="menu-btn"></div>
+        </div>
+    </header>
+
+    <!-- Tracking Container -->
+    <div class="tracking-container">
+        <div class="tracking-header">
+            <h1>Track Your Order</h1>
+            <p style="color: #999;">Enter your order number to track your delivery</p>
+        </div>
+
+        <!-- Order Search -->
+        <div class="order-search">
+            <h3>Find Your Order</h3>
+            <form class="search-form" id="searchForm">
+                <input type="text" id="orderNumber" placeholder="Enter order number (e.g., #ORD123456)" required>
+                <button type="submit">Track Order</button>
+            </form>
+        </div>
+
+        <!-- Tracking Information -->
+        <div class="tracking-info" id="trackingInfo">
+            <!-- Order Summary -->
+            <div class="order-summary">
+                <h4><i class="fas fa-receipt"></i> Order Summary</h4>
+                <div class="order-detail-row">
+                    <span>Order Number:</span>
+                    <span id="trackOrderNumber">#ORD000</span>
+                </div>
+                <div class="order-detail-row">
+                    <span>Placed on:</span>
+                    <span id="trackOrderDate"></span>
+                </div>
+                <div class="order-detail-row">
+                    <span>Total Amount:</span>
+                    <span id="trackOrderTotal" style="color: var(--main-color); font-weight: bold;">$0.00</span>
+                </div>
+                <div class="order-detail-row">
+                    <span>Delivery Address:</span>
+                    <span id="trackDeliveryAddress"></span>
+                </div>
+            </div>
+
+            <!-- Tracking Timeline -->
+            <div class="tracking-timeline" id="trackingTimeline">
+                <!-- Timeline items will be populated here -->
+            </div>
+
+            <!-- Delivery Map -->
+            <div class="delivery-map">
+                <h3><i class="fas fa-map-marked-alt"></i> Delivery Location</h3>
+                <div class="map-placeholder">
+                    <i class="fas fa-map-marker-alt" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                    <p>Live tracking map would appear here</p>
+                </div>
+            </div>
+
+            <!-- Contact Driver -->
+            <div class="contact-driver" id="contactDriver" style="display: none;">
+                <h3><i class="fas fa-motorcycle"></i> Your Delivery Driver</h3>
+                <div class="driver-info">
+                    <div class="driver-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="driver-details">
+                        <h4 id="driverName">John Driver</h4>
+                        <p id="driverPhone">+1234567890</p>
+                    </div>
+                </div>
+                <div class="contact-buttons">
+                    <button class="btn-call" onclick="callDriver()">
+                        <i class="fas fa-phone"></i> Call Driver
+                    </button>
+                    <button class="btn-message" onclick="messageDriver()">
+                        <i class="fas fa-comment"></i> Message Driver
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <section class="footer">
+        <div class="box-container">
+            <div class="box">
+                <h3>our branches</h3>
+                <a href="#"><i class="fas fa-arrow-right"></i> india</a>
+                <a href="#"><i class="fas fa-arrow-right"></i> USA</a>
+                <a href="#"><i class="fas fa-arrow-right"></i> france</a>
+                <a href="#"><i class="fas fa-arrow-right"></i> africa</a>
+                <a href="#"><i class="fas fa-arrow-right"></i> japan</a>
+            </div>
+            <div class="box">
+                <h3>quick links</h3>
+                <a href="index.html"><i class="fas fa-arrow-right"></i> home</a>
+                <a href="#about"><i class="fas fa-arrow-right"></i> about</a>
+                <a href="#menu"><i class="fas fa-arrow-right"></i> menu</a>
+                <a href="#review"><i class="fas fa-arrow-right"></i> review</a>
+                <a href="#book"><i class="fas fa-arrow-right"></i> book</a>
+            </div>
+            <div class="box">
+                <h3>contact info</h3>
+                <a href="#"><i class="fas fa-phone"></i> +123-456-7890</a>
+                <a href="#"><i class="fas fa-phone"></i> +111-222-3333</a>
+                <a href="#"><i class="fas fa-envelope"></i> coffee@gmail.com</a>
+                <a href="#"><i class="fas fa-envelope"></i> Perú, Lima</a>
+            </div>
+            <div class="box">
+                <h3>contact info</h3>
+                <a href="#"><i class="fab fa-facebook-f"></i> facebook</a>
+                <a href="#"><i class="fab fa-twitter"></i> twitter</a>
+                <a href="#"><i class="fab fa-instagram"></i> instagram</a>
+                <a href="#"><i class="fab fa-linkedin"></i> linkedin</a>
+                <a href="#"><i class="fab fa-twitter"></i> twitter</a>
+            </div>
+        </div>
+        <div class="credit">created by <span>mr. web designer</span> | all rights reserved</div>
+    </section>
+
+    <script>
+        // Order tracking functionality
+        class OrderTracking {
+            constructor() {
+                this.order = null;
+                this.init();
+            }
+
+            init() {
+                this.bindEvents();
+                // Check if order ID is in URL
+                const urlParams = new URLSearchParams(window.location.search);
+                const orderId = urlParams.get('orderId');
+                if (orderId) {
+                    document.getElementById('orderNumber').value = `#ORD${orderId.slice(-6)}`;
+                    this.searchOrder();
+                }
+            }
+
+            bindEvents() {
+                document.getElementById('searchForm').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.searchOrder();
+                });
+            }
+
+            searchOrder() {
+                const orderNumberInput = document.getElementById('orderNumber').value.trim();
+                
+                // Extract order ID from order number
+                const orderId = orderNumberInput.replace('#ORD', '');
+                
+                const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+                this.order = orders.find(o => o.id.includes(orderId) || o.id.slice(-6) === orderId);
+                
+                if (!this.order) {
+                    this.showNotification('Order not found. Please check your order number.', 'error');
+                    return;
+                }
+
+                this.displayTrackingInfo();
+            }
+
+            displayTrackingInfo() {
+                // Show tracking info section
+                document.getElementById('trackingInfo').classList.add('show');
+                
+                // Update order summary
+                document.getElementById('trackOrderNumber').textContent = `#ORD${this.order.id.slice(-6)}`;
+                
+                const orderDate = new Date(this.order.createdAt);
+                document.getElementById('trackOrderDate').textContent = orderDate.toLocaleDateString() + ' ' + orderDate.toLocaleTimeString();
+                
+                document.getElementById('trackOrderTotal').textContent = `$${this.order.total.toFixed(2)}`;
+                
+                if (this.order.deliveryInfo) {
+                    document.getElementById('trackDeliveryAddress').textContent = this.order.deliveryInfo.address;
+                }
+                
+                // Generate tracking timeline
+                this.generateTimeline();
+                
+                // Show driver info if order is out for delivery
+                if (this.getOrderStatus() >= 3) {
+                    this.showDriverInfo();
+                }
+            }
+
+            getOrderStatus() {
+                // Simulate order status based on time elapsed
+                const now = new Date();
+                const orderTime = new Date(this.order.createdAt);
+                const minutesElapsed = Math.floor((now - orderTime) / 60000);
+                
+                if (minutesElapsed < 5) return 0; // Order confirmed
+                if (minutesElapsed < 15) return 1; // Preparing
+                if (minutesElapsed < 20) return 2; // Ready for pickup
+                if (minutesElapsed < 35) return 3; // Out for delivery
+                return 4; // Delivered
+            }
+
+            generateTimeline() {
+                const timeline = document.getElementById('trackingTimeline');
+                const status = this.getOrderStatus();
+                const orderTime = new Date(this.order.createdAt);
+                
+                const timelineSteps = [
+                    { 
+                        status: 0, 
+                        title: 'Order Confirmed', 
+                        description: 'We\'ve received your order and payment',
+                        time: orderTime
+                    },
+                    { 
+                        status: 1, 
+                        title: 'Preparing Your Coffee', 
+                        description: 'Our baristas are crafting your perfect coffee',
+                        time: new Date(orderTime.getTime() + 5 * 60000)
+                    },
+                    { 
+                        status: 2, 
+                        title: 'Ready for Pickup', 
+                        description: 'Your order is ready and waiting for delivery',
+                        time: new Date(orderTime.getTime() + 15 * 60000)
+                    },
+                    { 
+                        status: 3, 
+                        title: 'Out for Delivery', 
+                        description: 'Your order is on its way to you',
+                        time: new Date(orderTime.getTime() + 20 * 60000)
+                    },
+                    { 
+                        status: 4, 
+                        title: 'Delivered', 
+                        description: 'Enjoy your coffee!',
+                        time: new Date(orderTime.getTime() + 35 * 60000)
+                    }
+                ];
+                
+                timeline.innerHTML = timelineSteps.map((step, index) => {
+                    let itemClass = 'timeline-item';
+                    if (step.status < status) itemClass += ' completed';
+                    else if (step.status === status) itemClass += ' active';
+                    
+                    const timeString = step.time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                    
+                    return `
+                        <div class="${itemClass}">
+                            <div class="timeline-content">
+                                <h4>${step.title}</h4>
+                                <p>${step.description}</p>
+                                <div class="timeline-time">
+                                    <i class="fas fa-clock"></i> ${timeString}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            showDriverInfo() {
+                // Show driver contact section
+                document.getElementById('contactDriver').style.display = 'block';
+                
+                // Generate random driver info
+                const drivers = [
+                    { name: 'John Driver', phone: '+1234567890' },
+                    { name: 'Sarah Rider', phone: '+0987654321' },
+                    { name: 'Mike Delivery', phone: '+1122334455' }
+                ];
+                
+                const driver = drivers[Math.floor(Math.random() * drivers.length)];
+                document.getElementById('driverName').textContent = driver.name;
+                document.getElementById('driverPhone').textContent = driver.phone;
+            }
+
+            showNotification(message, type = 'success') {
+                const notification = document.createElement('div');
+                notification.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    padding: 1rem 1.5rem;
+                    background: ${type === 'success' ? '#4CAF50' : '#f44336'};
+                    color: white;
+                    border-radius: 0.5rem;
+                    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                    z-index: 10001;
+                    animation: slideIn 0.3s ease;
+                `;
+                notification.textContent = message;
+                document.body.appendChild(notification);
+
+                setTimeout(() => {
+                    notification.style.animation = 'fadeOut 0.3s ease';
+                    setTimeout(() => notification.remove(), 300);
+                }, 3000);
+            }
+        }
+
+        // Driver contact functions
+        function callDriver() {
+            const driverPhone = document.getElementById('driverPhone').textContent;
+            window.location.href = `tel:${driverPhone}`;
+        }
+
+        function messageDriver() {
+            alert('Messaging feature would open a chat interface with the driver');
+        }
+
+        // Initialize tracking page when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            new OrderTracking();
+        });
+
+        // Add fadeOut animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeOut {
+                from { opacity: 1; transform: translateX(0); }
+                to { opacity: 0; transform: translateX(100px); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

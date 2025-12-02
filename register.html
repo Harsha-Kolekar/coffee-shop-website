@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Coffee Shop</title>
+
+    <!-- Font Awesome CDN Link  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <!-- Custom CSS File Link  -->
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* Hide navbar */
+        .header .navbar {
+            display: none;
+        }
+        
+        /* Style for logo container */
+        .logo-container {
+            text-align: center;
+            padding: 2rem 0;
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('image/coffee-bg.jpg');
+            background-size: cover;
+            background-position: center;
+            color: #fff;
+            margin-bottom: 3rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .logo-container .logo {
+            font-size: 3.5rem;
+            color: #fff;
+            text-decoration: none;
+            display: inline-block;
+            margin: 1rem 0;
+        }
+        
+        .logo-container .logo i {
+            color: #d3ad7f;
+        }
+        
+        .logo-container p {
+            font-size: 1.6rem;
+            margin-top: 1rem;
+            color: #eee;
+        }
+        
+        :root {
+            --main-color: #d3ad7f;
+            --black: #13131a;
+            --bg: #010103;
+            --border: .1rem solid rgba(255,255,255,.3);
+            --box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.1);
+        }
+
+        .form-container {
+            min-height: calc(100vh - 200px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            background: linear-gradient(135deg, #f5f7fa 0%, #f9f9f9 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .form-container::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: url('image/coffee-beans-bg.png');
+            background-size: 300px;
+            opacity: 0.1;
+            z-index: 0;
+        }
+
+        .form-container form {
+            width: 100%;
+            max-width: 50rem;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 1rem;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            padding: 4rem;
+            text-align: center;
+            transform: translateY(0);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0,0,0,0.05);
+            position: relative;
+            z-index: 1;
+            backdrop-filter: blur(5px);
+        }
+        
+        .form-container form:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+        }
+
+        .form-container form h3 {
+            font-size: 2.5rem;
+            text-transform: uppercase;
+            color: var(--black);
+            margin-bottom: 2rem;
+            position: relative;
+            padding-bottom: 1rem;
+        }
+        
+        .form-container form h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: var(--main-color);
+            border-radius: 3px;
+        }
+
+        .form-container form .box {
+            width: 100%;
+            padding: 1.2rem 1.4rem;
+            border: 1px solid #ddd;
+            border-radius: 0.5rem;
+            font-size: 1.6rem;
+            margin: 1rem 0;
+            background: #f9f9f9;
+            transition: all 0.3s ease;
+        }
+        
+        .form-container form .box:focus {
+            border-color: var(--main-color);
+            box-shadow: 0 0 0 0.2rem rgba(211, 173, 127, 0.25);
+            background: #fff;
+            outline: none;
+        }
+
+        .form-container form p {
+            padding-top: 1.5rem;
+            font-size: 1.5rem;
+            color: #666;
+            margin: 1rem 0;
+        }
+        
+        .form-container form p a {
+            color: var(--main-color);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .form-container form p a:hover {
+            text-decoration: underline;
+            color: #b88a52;
+        }
+
+        .btn {
+            margin-top: 1.5rem;
+            display: inline-block;
+            padding: 1.2rem 3rem;
+            font-size: 1.7rem;
+            color: #fff;
+            background: var(--main-color);
+            cursor: pointer;
+            border: none;
+            border-radius: 5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            width: 100%;
+            font-weight: 600;
+        }
+        
+        .btn:hover {
+            background: #b88a52;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        /* Password strength indicator */
+        .password-strength {
+            width: 100%;
+            height: 5px;
+            background: #eee;
+            border-radius: 5px;
+            margin: 0.5rem 0 1.5rem;
+            overflow: hidden;
+        }
+        
+        .password-strength::before {
+            content: '';
+            display: block;
+            height: 100%;
+            width: 0%;
+            background: #ff4d4d;
+            transition: all 0.3s ease;
+        }
+        
+        .password-strength.weak::before {
+            width: 30%;
+            background: #ff4d4d;
+        }
+        
+        .password-strength.medium::before {
+            width: 60%;
+            background: #ffcc00;
+        }
+        
+        .password-strength.strong::before {
+            width: 100%;
+            background: #4CAF50;
+        }
+        
+        .password-hint {
+            font-size: 1.2rem;
+            color: #666;
+            margin-top: -1rem;
+            margin-bottom: 1rem;
+            text-align: left;
+            display: none;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .form-container form {
+                padding: 3rem 2rem;
+            }
+            
+            .form-container form h3 {
+                font-size: 2.2rem;
+            }
+        }
+        
+        @media (max-width: 450px) {
+            .form-container form {
+                padding: 2rem 1.5rem;
+            }
+            
+            .btn {
+                padding: 1rem 2rem;
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header with Logo -->
+    <div class="logo-container">       
+        <div class="logo">
+            <i class="fas fa-coffee"></i> Coffee Shop                                 
+        </div>
+        <p>Create your account and start your coffee journey with us</p>          </div>
+
+    <!-- Register Form -->
+    <section class="form-container">
+        <form id="registerForm">
+            <h3>Create Account</h3>
+            
+            <div class="inputBox">
+                <input type="text" id="name" class="box" placeholder="Enter your name" required>
+            </div>
+            
+            <div class="inputBox">
+                <input type="email" id="email" class="box" placeholder="Enter your email" required>
+            </div>
+            
+            <div class="inputBox">
+                <input type="password" id="password" class="box" placeholder="Enter your password" required 
+                       pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{6,30}$"
+                       title="Password must be 6-30 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character">
+                <div class="password-strength" id="passwordStrength"></div>
+                <div class="password-hint" id="passwordHint">
+                    Password must contain:
+                    <ul>
+                        <li>At least 6 characters</li>
+                        <li>At least one uppercase letter</li>
+                        <li>At least one lowercase letter</li>
+                        <li>At least one number</li>
+                        <li>At least one special character (!@#$%^&*)</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="inputBox">
+                <input type="password" id="confirmPassword" class="box" placeholder="Confirm your password" required>
+            </div>
+            
+            <button type="submit" class="btn">Register Now</button>
+            
+            <p>Already have an account? <a href="login.html">Login now</a></p>
+        </form>
+    </section>
+
+    <!-- Message container for showing success/error messages -->
+    <div id="message" class="message" style="display: none; margin: 10px auto; max-width: 500px; text-align: center; padding: 10px; border-radius: 4px;"></div>
+    
+    <script>
+        // Show message to user
+        function showMessage(message, type = 'success') {
+            const messageDiv = document.getElementById('message');
+            if (!messageDiv) return;
+            
+            // Clear any existing timeout
+            if (window.messageTimeout) {
+                clearTimeout(window.messageTimeout);
+            }
+            
+            messageDiv.textContent = message;
+            messageDiv.className = `message ${type}`;
+            messageDiv.style.display = 'block';
+            messageDiv.style.padding = '12px 20px';
+            messageDiv.style.borderRadius = '4px';
+            messageDiv.style.margin = '10px auto';
+            messageDiv.style.maxWidth = '500px';
+            messageDiv.style.transition = 'all 0.3s ease';
+            
+            // Style based on message type
+            if (type === 'error') {
+                messageDiv.style.backgroundColor = '#ffebee';
+                messageDiv.style.color = '#c62828';
+                messageDiv.style.border = '1px solid #ef9a9a';
+            } else {
+                messageDiv.style.backgroundColor = '#e8f5e9';
+                messageDiv.style.color = '#2e7d32';
+                messageDiv.style.border = '1px solid #a5d6a7';
+            }
+            
+            // Auto-hide after delay (longer for errors)
+            const hideDelay = type === 'error' ? 10000 : 5000;
+            window.messageTimeout = setTimeout(() => {
+                messageDiv.style.opacity = '0';
+                setTimeout(() => {
+                    messageDiv.style.display = 'none';
+                    messageDiv.style.opacity = '1';
+                }, 300);
+            }, hideDelay);
+            
+            // Scroll to message
+            messageDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    </script>
+    
+    <script>
+        // Password strength indicator
+        const passwordInput = document.getElementById('password');
+        const passwordStrength = document.getElementById('passwordStrength');
+        const passwordHint = document.getElementById('passwordHint');
+        
+        if (passwordInput) {
+            passwordInput.addEventListener('focus', function() {
+                passwordHint.style.display = 'block';
+            });
+            
+            passwordInput.addEventListener('blur', function() {
+                if (this.value === '') {
+                    passwordHint.style.display = 'none';
+                }
+            });
+            
+            passwordInput.addEventListener('input', function() {
+                const password = this.value;
+                let strength = 0;
+                
+                // Check password strength
+                if (password.length >= 6) strength += 1;
+                if (password.match(/[a-z]+/)) strength += 1;
+                if (password.match(/[A-Z]+/)) strength += 1;
+                if (password.match(/[0-9]+/)) strength += 1;
+                if (password.match(/[!@#$%^&*]+/)) strength += 1;
+                
+                // Update strength indicator
+                passwordStrength.className = 'password-strength';
+                if (password.length > 0) {
+                    if (strength <= 2) {
+                        passwordStrength.classList.add('weak');
+                    } else if (strength <= 4) {
+                        passwordStrength.classList.add('medium');
+                    } else {
+                        passwordStrength.classList.add('strong');
+                    }
+                }
+            });
+        }
+        
+        // Form submission
+        const registerForm = document.getElementById('registerForm');
+        if (registerForm) {
+            registerForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const name = document.getElementById('name').value.trim();
+                const email = document.getElementById('email').value.trim();
+                const password = document.getElementById('password').value;
+                const confirmPassword = document.getElementById('confirmPassword').value;
+                
+                // Basic validation
+                if (!name || !email || !password || !confirmPassword) {
+                    showMessage('Please fill in all fields', 'error');
+                    return;
+                }
+                
+                if (password !== confirmPassword) {
+                    showMessage('Passwords do not match', 'error');
+                    return;
+                }
+                
+                // Show loading state
+                const submitBtn = registerForm.querySelector('button[type="submit"]');
+                const originalBtnText = submitBtn.innerHTML;
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Registering...';
+                
+                try {
+                    const response = await fetch('http://localhost:3000/api/auth/register', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ 
+                            name,
+                            email,
+                            password 
+                        })
+                    });
+                    
+                    let data;
+                    try {
+                        data = await response.json();
+                        console.log('Registration response:', data);
+                    } catch (jsonError) {
+                        console.error('Error parsing JSON:', jsonError);
+                        throw new Error('Invalid response from server');
+                    }
+                    
+                    if (!response.ok) {
+                        const errorMessage = data.message || 'Registration failed. Please try again.';
+                        throw new Error(errorMessage);
+                    }
+                    
+                    // Registration successful
+                    showMessage('Registration successful! Redirecting to login...', 'success');
+                    
+                    // Redirect to login page after a short delay
+                    setTimeout(() => {
+                        window.location.href = 'login.html';
+                    }, 2000);
+                    
+                } catch (error) {
+                    console.error('Registration error:', error);
+                    const userFriendlyError = error.message.includes('Failed to fetch') ? 
+                        'Unable to connect to the server. Please check your internet connection.' : 
+                        error.message;
+                    showMessage(userFriendlyError, 'error');
+                } finally {
+                    // Reset button state
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalBtnText;
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>

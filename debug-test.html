@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Test</title>
+</head>
+<body>
+    <h1>Debug Test Page</h1>
+    
+    <div id="test-results">
+        <h2>Test Results:</h2>
+        <div id="results"></div>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        // Test script to check if auth.js is working
+        document.addEventListener('DOMContentLoaded', function() {
+            const results = document.getElementById('results');
+            
+            // Test 1: Check if config is loaded
+            results.innerHTML += '<p>✓ Config loaded: ' + (typeof window.API_CONFIG !== 'undefined') + '</p>';
+            
+            // Test 2: Check if getApiUrl function exists
+            results.innerHTML += '<p>✓ getApiUrl function exists: ' + (typeof window.getApiUrl === 'function') + '</p>';
+            
+            // Test 3: Check localStorage
+            const token = localStorage.getItem('token');
+            results.innerHTML += '<p>✓ Token in localStorage: ' + !!token + '</p>';
+            
+            // Test 4: Simulate navbar elements
+            const navbar = document.createElement('div');
+            navbar.innerHTML = `
+                <div id="guest-menu" style="display: inline-block;">
+                    <a href="login.html" class="btn">Login</a>
+                    <a href="register.html" class="btn">Register</a>
+                </div>
+                <div id="user-menu" style="display: none;">
+                    <a href="#" id="profile-link" class="btn">My Profile</a>
+                    <a href="#" id="logout-btn" class="btn">Logout</a>
+                </div>
+            `;
+            document.body.appendChild(navbar);
+            
+            // Test 5: Wait a bit and check if auth.js found the elements
+            setTimeout(() => {
+                const profileLink = document.getElementById('profile-link');
+                const logoutBtn = document.getElementById('logout-btn');
+                const guestMenu = document.getElementById('guest-menu');
+                const userMenu = document.getElementById('user-menu');
+                
+                results.innerHTML += '<p>✓ Profile link found: ' + !!profileLink + '</p>';
+                results.innerHTML += '<p>✓ Logout button found: ' + !!logoutBtn + '</p>';
+                results.innerHTML += '<p>✓ Guest menu found: ' + !!guestMenu + '</p>';
+                results.innerHTML += '<p>✓ User menu found: ' + !!userMenu + '</p>';
+                
+                // Test 6: Check UI state
+                results.innerHTML += '<p>✓ Guest menu visible: ' + (guestMenu && guestMenu.style.display !== 'none') + '</p>';
+                results.innerHTML += '<p>✓ User menu visible: ' + (userMenu && userMenu.style.display !== 'none') + '</p>';
+                
+                // Test 7: Add click handlers manually
+                if (profileLink) {
+                    profileLink.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        results.innerHTML += '<p>✓ Profile link clicked!</p>';
+                    });
+                }
+                
+                if (logoutBtn) {
+                    logoutBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        results.innerHTML += '<p>✓ Logout button clicked!</p>';
+                    });
+                }
+                
+                results.innerHTML += '<p><strong>Click on the Profile and Logout buttons to test</strong></p>';
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

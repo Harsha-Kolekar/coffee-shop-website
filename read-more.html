@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Our Coffee - Caffe</title>
+    
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <style>
+        .about-hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 5rem 0;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .about-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('image/coffee-beans-pattern.png') repeat;
+            opacity: 0.1;
+            animation: float 20s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .about-hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .about-hero p {
+            font-size: 1.8rem;
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .info-sections {
+            padding: 4rem 0;
+            background: var(--bg-color);
+        }
+        
+        .section-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+        
+        .tab-btn {
+            padding: 1rem 2rem;
+            background: var(--main-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1.3rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .tab-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255,255,255,0.2);
+            transition: left 0.3s ease;
+        }
+        
+        .tab-btn:hover::before {
+            left: 100%;
+        }
+        
+        .tab-btn.active {
+            background: var(--orange);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 0, 0.3);
+        }
+        
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .info-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 3rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: var(--border);
+            transition: transform 0.3s ease;
+        }
+        
+        .info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+        
+        .info-card h2 {
+            color: var(--main-color);
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .info-card h2 i {
+            color: var(--orange);
+            font-size: 2rem;
+        }
+        
+        .info-card p {
+            color: var(--main-color);
+            font-size: 1.6rem;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .feature-item {
+            background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .feature-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+        
+        .feature-item i {
+            font-size: 3rem;
+            color: var(--orange);
+            margin-bottom: 1rem;
+        }
+        
+        .feature-item h3 {
+            color: var(--main-color);
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+        
+        .feature-item p {
+            color: #666;
+            font-size: 1.4rem;
+        }
+        
+        .branch-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .branch-card {
+            background: white;
+            border: var(--border);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+        
+        .branch-card:hover {
+            border-color: var(--orange);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+        
+        .branch-card h3 {
+            color: var(--main-color);
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+        
+        .branch-card p {
+            color: #666;
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .delivery-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .step-item {
+            text-align: center;
+            position: relative;
+        }
+        
+        .step-item::after {
+            content: '\f054';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            right: -1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--orange);
+            font-size: 2rem;
+            display: none;
+        }
+        
+        .step-item:not(:last-child)::after {
+            display: block;
+        }
+        
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: var(--orange);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin: 0 auto 1rem;
+        }
+        
+        .step-item h3 {
+            color: var(--main-color);
+            font-size: 1.6rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .step-item p {
+            color: #666;
+            font-size: 1.4rem;
+        }
+        
+        .back-btn {
+            display: inline-block;
+            margin-top: 2rem;
+            padding: 1rem 2rem;
+            background: var(--main-color);
+            color: white;
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            font-size: 1.6rem;
+            transition: all 0.3s ease;
+        }
+        
+        .back-btn:hover {
+            background: var(--orange);
+            transform: translateX(-5px);
+        }
+        
+        @media (max-width: 768px) {
+            .about-hero h1 {
+                font-size: 3rem;
+            }
+            
+            .section-tabs {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .tab-btn {
+                width: 200px;
+            }
+            
+            .step-item::after {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- Header -->
+    <header class="header">
+        <a href="#" class="logo">
+            <img src="image/logo.png" alt="">
+        </a>
+        <nav class="navbar">
+            <a href="index.html#home">home</a>
+            <a href="index.html#about">about</a>
+            <a href="index.html#menu">menu</a>
+            <a href="index.html#products">products</a>
+            <a href="index.html#review">review</a>
+            <a href="index.html#contact">contact</a>
+        </nav>
+        <div class="icons">
+            <div id="menu-btn" class="fas fa-bars"></div>
+            <div id="cart-btn" class="fas fa-shopping-cart"></div>
+            <div id="search-btn" class="fas fa-search"></div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="about-hero">
+        <div class="container">
+            <h1>Discover What Makes Our Coffee Special</h1>
+            <p>From bean to cup, we're passionate about delivering the perfect coffee experience</p>
+        </div>
+    </section>
+
+    <!-- Info Sections -->
+    <section class="info-sections">
+        <div class="container">
+            <!-- Tab Buttons -->
+            <div class="section-tabs">
+                <button class="tab-btn active" onclick="showTab('quality')">
+                    <i class="fas fa-coffee"></i> Quality Coffee
+                </button>
+                <button class="tab-btn" onclick="showTab('branches')">
+                    <i class="fas fa-store"></i> Our Branches
+                </button>
+                <button class="tab-btn" onclick="showTab('delivery')">
+                    <i class="fas fa-truck"></i> Free Delivery
+                </button>
+            </div>
+
+            <!-- Quality Coffee Tab -->
+            <div id="quality" class="tab-content active">
+                <div class="info-card">
+                    <h2><i class="fas fa-award"></i> Premium Quality Coffee</h2>
+                    <p>At Caffe, we believe that great coffee starts with great beans. We source our coffee from the finest plantations around the world, ensuring each cup delivers an exceptional taste experience.</p>
+                    
+                    <div class="feature-grid">
+                        <div class="feature-item">
+                            <i class="fas fa-leaf"></i>
+                            <h3>100% Arabica Beans</h3>
+                            <p>We only use premium Arabica beans, known for their superior flavor and aroma profiles.</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-fire"></i>
+                            <h3>Artisan Roasting</h3>
+                            <p>Our master roasters carefully craft each batch to bring out the unique characteristics.</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-clock"></i>
+                            <h3>Fresh Daily</h3>
+                            <p>We roast our beans daily and grind them fresh for each order to ensure maximum freshness.</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-globe"></i>
+                            <h3>Ethically Sourced</h3>
+                            <p>We work directly with farmers who practice sustainable and ethical farming methods.</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-tint"></i>
+                            <h3>Pure Water</h3>
+                            <p>We use filtered water to ensure nothing interferes with our coffee's pure taste.</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-user-tie"></i>
+                            <h3>Expert Baristas</h3>
+                            <p>Our skilled baristas are trained to craft the perfect cup every time.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <h2><i class="fas fa-flask"></i> Our Coffee Process</h2>
+                    <p>From farm to cup, every step is carefully monitored to ensure quality and consistency.</p>
+                    
+                    <div class="delivery-steps">
+                        <div class="step-item">
+                            <div class="step-number">1</div>
+                            <h3>Sourcing</h3>
+                            <p>Direct partnerships with premium coffee farms</p>
+                        </div>
+                        <div class="step-item">
+                            <div class="step-number">2</div>
+                            <h3>Quality Control</h3>
+                            <p>Each batch is tested for flavor and quality</p>
+                        </div>
+                        <div class="step-item">
+                            <div class="step-number">3</div>
+                            <h3>Roasting</h3>
+                            <p>Custom roasting profiles for each bean type</p>
+                        </div>
+                        <div class="step-item">
+                            <div class="step-number">4</div>
+                            <h3>Brewing</h3>
+                            <p>Precise brewing methods for optimal extraction</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Our Branches Tab -->
+            <div id="branches" class="tab-content">
+                <div class="info-card">
+                    <h2><i class="fas fa-map-marked-alt"></i> Visit Our Branches</h2>
+                    <p>With multiple locations across the city, we're always nearby to serve you the perfect cup of coffee. Each branch offers the same quality and experience with unique local touches.</p>
+                    
+                    <div class="branch-list">
+                        <div class="branch-card">
+                            <h3><i class="fas fa-store"></i> Downtown Branch</h3>
+                            <p><i class="fas fa-map-marker-alt"></i> 123 Main Street, Downtown</p>
+                            <p><i class="fas fa-phone"></i> (555) 123-4567</p>
+                            <p><i class="fas fa-clock"></i> Mon-Fri: 6AM-10PM, Sat-Sun: 7AM-11PM</p>
+                            <p><i class="fas fa-wifi"></i> Free WiFi available</p>
+                        </div>
+                        <div class="branch-card">
+                            <h3><i class="fas fa-store"></i> Airport Location</h3>
+                            <p><i class="fas fa-map-marker-alt"></i> Terminal 2, International Airport</p>
+                            <p><i class="fas fa-phone"></i> (555) 234-5678</p>
+                            <p><i class="fas fa-clock"></i> Daily: 5AM-12AM</p>
+                            <p><i class="fas fa-plane"></i> Perfect for travelers</p>
+                        </div>
+                        <div class="branch-card">
+                            <h3><i class="fas fa-store"></i> University Campus</h3>
+                            <p><i class="fas fa-map-marker-alt"></i> Student Union Building, Room 101</p>
+                            <p><i class="fas fa-phone"></i> (555) 345-6789</p>
+                            <p><i class="fas fa-clock"></i> Mon-Fri: 7AM-9PM, Sat-Sun: 8AM-8PM</p>
+                            <p><i class="fas fa-graduation-cap"></i> Student discounts available</p>
+                        </div>
+                        <div class="branch-card">
+                            <h3><i class="fas fa-store"></i> Shopping Mall</h3>
+                            <p><i class="fas fa-map-marker-alt"></i> City Mall, Level 3, Near Food Court</p>
+                            <p><i class="fas fa-phone"></i> (555) 456-7890</p>
+                            <p><i class="fas fa-clock"></i> Mon-Sat: 10AM-9PM, Sun: 11AM-7PM</p>
+                            <p><i class="fas fa-shopping-bag"></i> Shopping convenience</p>
+                        </div>
+                        <div class="branch-card">
+                            <h3><i class="fas fa-store"></i> Business District</h3>
+                            <p><i class="fas fa-map-marker-alt"></i> 456 Corporate Plaza, Suite 100</p>
+                            <p><i class="fas fa-phone"></i> (555) 567-8901</p>
+                            <p><i class="fas fa-clock"></i> Mon-Fri: 6:30AM-8PM, Sat: 8AM-6PM</p>
+                            <p><i class="fas fa-briefcase"></i> Quick service for professionals</p>
+                        </div>
+                        <div class="branch-card">
+                            <h3><i class="fas fa-store"></i> Riverside Park</h3>
+                            <p><i class="fas fa-map-marker-alt"></i> 789 Park Avenue, Riverside</p>
+                            <p><i class="fas fa-phone"></i> (555) 678-9012</p>
+                            <p><i class="fas fa-clock"></i> Daily: 6AM-8PM</p>
+                            <p><i class="fas fa-tree"></i> Scenic outdoor seating</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <h2><i class="fas fa-star"></i> Why Choose Our Branches?</h2>
+                    <p>Each of our locations is designed to provide you with the perfect coffee experience, whether you're looking for a quick grab-and-go or a place to relax and work.</p>
+                    
+                    <div class="feature-grid">
+                        <div class="feature-item">
+                            <i class="fas fa-parking"></i>
+                            <h3>Easy Parking</h3>
+                            <p>Convenient parking available at all locations</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-couch"></i>
+                            <h3>Comfortable Seating</h3>
+                            <p>Cozy atmosphere perfect for work or relaxation</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-mobile-alt"></i>
+                            <h3>Mobile Ordering</h3>
+                            <p>Order ahead and skip the line with our app</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Free Delivery Tab -->
+            <div id="delivery" class="tab-content">
+                <div class="info-card">
+                    <h2><i class="fas fa-truck"></i> Free Delivery Service</h2>
+                    <p>Enjoy your favorite coffee from the comfort of your home or office! We offer fast, reliable, and free delivery on all orders above a minimum amount.</p>
+                    
+                    <div class="feature-grid">
+                        <div class="feature-item">
+                            <i class="fas fa-shipping-fast"></i>
+                            <h3>30-Minute Delivery</h3>
+                            <p>Get your coffee delivered within 30 minutes or less</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-dollar-sign"></i>
+                            <h3>Free on Orders $15+</h3>
+                            <p>No delivery charges for orders above $15</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-temperature-high"></i>
+                            <h3>Temperature Controlled</h3>
+                            <p>Special packaging keeps your coffee hot and fresh</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-map"></i>
+                            <h3>Live Tracking</h3>
+                            <p>Track your order in real-time from preparation to delivery</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-headset"></i>
+                            <h3>24/7 Support</h3>
+                            <p>Customer service available around the clock</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-undo"></i>
+                            <h3>Easy Returns</h3>
+                            <p>Not satisfied? We'll make it right immediately</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <h2><i class="fas fa-list-ol"></i> How Our Delivery Works</h2>
+                    <p>Getting your favorite coffee delivered is as easy as 1-2-3-4!</p>
+                    
+                    <div class="delivery-steps">
+                        <div class="step-item">
+                            <div class="step-number">1</div>
+                            <h3>Order Online</h3>
+                            <p>Browse our menu and place your order through our website or app</p>
+                        </div>
+                        <div class="step-item">
+                            <div class="step-number">2</div>
+                            <h3>Confirmation</h3>
+                            <p>Receive instant confirmation with estimated delivery time</p>
+                        </div>
+                        <div class="step-item">
+                            <div class="step-number">3</div>
+                            <h3>Preparation</h3>
+                            <p>Our baristas prepare your order with care and precision</p>
+                        </div>
+                        <div class="step-item">
+                            <div class="step-number">4</div>
+                            <h3>Fast Delivery</h3>
+                            <p>Your order arrives hot and fresh at your doorstep</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <h2><i class="fas fa-map-marked-alt"></i> Delivery Areas</h2>
+                    <p>We currently deliver to the following areas. Don't see your location? We're expanding rapidly!</p>
+                    
+                    <div class="branch-list">
+                        <div class="branch-card">
+                            <h3><i class="fas fa-city"></i> Central City</h3>
+                            <p>All downtown areas and business districts</p>
+                            <p><i class="fas fa-check-circle" style="color: green;"></i> Available</p>
+                        </div>
+                        <div class="branch-card">
+                            <h3><i class="fas fa-home"></i> Suburban Areas</h3>
+                            <p>Residential neighborhoods within 5-mile radius</p>
+                            <p><i class="fas fa-check-circle" style="color: green;"></i> Available</p>
+                        </div>
+                        <div class="branch-card">
+                            <h3><i class="fas fa-university"></i> University Zone</h3>
+                            <p>Campus and surrounding student areas</p>
+                            <p><i class="fas fa-check-circle" style="color: green;"></i> Available</p>
+                        </div>
+                        <div class="branch-card">
+                            <h3><i class="fas fa-industry"></i> Industrial Park</h3>
+                            <p>Business parks and office complexes</p>
+                            <p><i class="fas fa-clock" style="color: orange;"></i> Coming Soon</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Back Button -->
+            <div style="text-align: center;">
+                <a href="index.html" class="back-btn">
+                    <i class="fas fa-arrow-left"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <section class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="footer-col">
+                    <h3>download our app</h3>
+                    <p>Download app for android and ios mobile phone.</p>
+                    <div class="app-logo">
+                        <img src="image/play-store.png" alt="">
+                        <img src="image/app-store.png" alt="">
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h3>quick links</h3>
+                    <ul>
+                        <li><a href="index.html#home">home</a></li>
+                        <li><a href="index.html#about">about</a></li>
+                        <li><a href="index.html#menu">menu</a></li>
+                        <li><a href="index.html#products">products</a></li>
+                        <li><a href="index.html#review">review</a></li>
+                        <li><a href="index.html#contact">contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>contact us</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> 123 Coffee Street, Cafe City</p>
+                    <p><i class="fas fa-phone"></i> +123 456 7890</p>
+                    <p><i class="fas fa-envelope"></i> info@caffe.com</p>
+                </div>
+                <div class="footer-col">
+                    <h3>follow us</h3>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Caffe. All rights reserved.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Custom JavaScript -->
+    <script>
+        function showTab(tabName) {
+            // Hide all tab contents
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Remove active class from all tab buttons
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            tabButtons.forEach(button => {
+                button.classList.remove('active');
+            });
+            
+            // Show selected tab content
+            document.getElementById(tabName).classList.add('active');
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+        }
+
+        // Add smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all cards
+        document.querySelectorAll('.info-card, .feature-item, .branch-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+    </script>
+
+</body>
+</html>
